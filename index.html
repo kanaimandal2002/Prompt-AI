@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Creative Writing Prompt Generator</h1>
+            <p>Get inspired with unique prompts and AI assistance when you're stuck</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="prompt">Writing Prompts</div>
+                <div class="tab" data-tab="write">Write Your Story</div>
+            </div>
+            
+            <div class="tab-content active" id="prompt-tab">
+                <div class="prompt-container">
+                    <div class="prompt-title">Your Writing Prompt:</div>
+                    <div class="prompt-content" id="prompt-content">
+                        Click the button below to generate your first writing prompt!
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="primary-btn" id="generate-prompt">
+                        <i class="fas fa-magic"></i> Generate New Prompt
+                    </button>
+                    <button class="secondary-btn" id="save-prompt">
+                        <i class="fas fa-bookmark"></i> Save Prompt
+                    </button>
+                </div>
+                
+                <div class="writing-area">
+                    <label for="quick-notes">Quick Notes & Ideas:</label>
+                    <textarea id="quick-notes" placeholder="Jot down your initial thoughts, characters, or plot ideas here..."></textarea>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="write-tab">
+                <div class="writing-area">
+                    <label for="story-text">Your Story:</label>
+                    <textarea id="story-text" placeholder="Start writing your story here..."></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button class="primary-btn" id="get-help">
+                        <i class="fas fa-robot"></i> Get AI Writing Help
+                    </button>
+                    <button class="tertiary-btn" id="clear-story">
+                        <i class="fas fa-broom"></i> Clear Story
+                    </button>
+                </div>
+                
+                <div class="ai-assistance">
+                    <div class="ai-title">AI Writing Assistance</div>
+                    <p>Stuck with your story? Click the button above to get AI-generated suggestions for continuing your narrative.</p>
+                    
+                    <div class="ai-suggestions" id="ai-suggestions">
+                        <!-- AI suggestions will appear here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>AI is generating creative content...</p>
+            </div>
+            
+            <div class="error-message" id="error-message">
+                <i class="fas fa-exclamation-triangle"></i> <span id="error-text"></span>
+            </div>
+        </div>
+        
+        <div class="inspiration-quote" id="inspiration-quote">
+            "The role of a writer is not to say what we all can say, but what we are unable to say." - Anaïs Nin
+        </div>
+        
+        <footer>
+            <p>Prompt Generator AI &copy; 2025 | Powered by AI Inspiration</p>
+        </footer>
+    </div>
+
+</body>
+</html>
