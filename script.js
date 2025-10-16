@@ -1,5 +1,4 @@
-
-       // DOM Elements
+ // DOM Elements
         const tabs = document.querySelectorAll('.tab');
         const generatorTab = document.getElementById('generator-tab');
         const writerTab = document.getElementById('writer-tab');
