@@ -1,38 +1,44 @@
-    <style>
-        * {
+ * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb3;
+            --secondary: #ff6b6b;
+            --accent: #4ecdc4;
+            --light: #f7f9fc;
+            --dark: #2d3748;
+            --gray: #718096;
+        }
+        
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 900px;
-            width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             padding: 20px;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         header h1 {
             font-size: 2.8rem;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         header p {
@@ -43,7 +49,7 @@
         }
         
         .app-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
@@ -52,7 +58,7 @@
         
         .tabs {
             display: flex;
-            background: #f5f7fa;
+            background: var(--light);
             border-bottom: 1px solid #e1e5eb;
         }
         
@@ -62,13 +68,14 @@
             text-align: center;
             cursor: pointer;
             font-weight: 600;
-            color: #6c757d;
+            color: var(--gray);
             transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
         }
         
         .tab.active {
-            color: #b21f1f;
-            border-bottom: 3px solid #b21f1f;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
             background: white;
         }
         
@@ -86,44 +93,22 @@
         }
         
         .prompt-container {
-            background: #f8f9fa;
+            background: var(--light);
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 5px solid #b21f1f;
+            border-left: 5px solid var(--primary);
         }
         
         .prompt-title {
-            font-size: 1.2rem;
-            color: #495057;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .prompt-content {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            color: #212529;
-            font-style: italic;
-        }
-        
-        .button-group {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        button {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin-bottom: 15px;
         }
+        
+        .prompt-title h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+      
