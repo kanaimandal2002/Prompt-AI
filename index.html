@@ -3,68 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Generator AI</title>
+    <title>Creative Writing Prompt Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb3;
+            --secondary: #ff6b6b;
+            --accent: #4ecdc4;
+            --light: #f7f9fc;
+            --dark: #2d3748;
+            --gray: #718096;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .app-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 1px solid #e1e5eb;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .prompt-container {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .prompt-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-title h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .prompt-content {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .prompt-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .primary-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .secondary-btn {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .secondary-btn:hover {
+            background: #3db8b0;
+            transform: translateY(-2px);
+        }
+        
+        .outline-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .outline-btn:hover {
+            background: rgba(138, 43, 226, 0.1);
+        }
+        
+        .writing-area {
+            margin-top: 30px;
+        }
+        
+        .writing-area label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        }
+        
+        .word-count {
+            text-align: right;
+            margin-top: 5px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .ai-help-container {
+            margin-top: 30px;
+            background: #fff9e6;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #ffcc00;
+        }
+        
+        .ai-help-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #b38f00;
+        }
+        
+        .ai-suggestions {
+            margin-top: 15px;
+        }
+        
+        .suggestion {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .suggestion-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .suggestion-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .use-suggestion {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .prompt-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category {
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .saved-prompts {
+            margin-top: 30px;
+        }
+        
+        .saved-prompt {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .saved-prompt-content {
+            flex: 1;
+        }
+        
+        .saved-prompt-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .prompt-actions {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Creative Writing Prompt Generator</h1>
-            <p>Get inspired with unique prompts and AI assistance when you're stuck</p>
+            <p>Get inspired with unique writing prompts and AI assistance when you need it</p>
         </header>
         
         <div class="app-container">
             <div class="tabs">
-                <div class="tab active" data-tab="prompt">Writing Prompts</div>
-                <div class="tab" data-tab="write">Write Your Story</div>
+                <div class="tab active" data-tab="generator">Prompt Generator</div>
+                <div class="tab" data-tab="writer">Writing Space</div>
+                <div class="tab" data-tab="saved">Saved Prompts</div>
             </div>
             
-            <div class="tab-content active" id="prompt-tab">
+            <div class="tab-content active" id="generator-tab">
+                <div class="prompt-categories">
+                    <div class="category active" data-category="all">All</div>
+                    <div class="category" data-category="fiction">Fiction</div>
+                    <div class="category" data-category="scifi">Sci-Fi</div>
+                    <div class="category" data-category="fantasy">Fantasy</div>
+                    <div class="category" data-category="mystery">Mystery</div>
+                    <div class="category" data-category="romance">Romance</div>
+                </div>
+                
                 <div class="prompt-container">
-                    <div class="prompt-title">Your Writing Prompt:</div>
-                    <div class="prompt-content" id="prompt-content">
+                    <div class="prompt-title">
+                        <h2>Your Writing Prompt</h2>
+                        <div class="prompt-actions">
+                            <button class="outline-btn" id="save-prompt">
+                                <i class="far fa-bookmark"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="prompt-content" id="current-prompt">
                         Click the button below to generate your first writing prompt!
+                    </div>
+                    <div class="prompt-actions">
+                        <button class="primary-btn" id="generate-prompt">
+                            <i class="fas fa-magic"></i> Generate New Prompt
+                        </button>
+                        <button class="secondary-btn" id="use-prompt">
+                            <i class="fas fa-pen-fancy"></i> Start Writing
+                        </button>
                     </div>
                 </div>
                 
-                <div class="button-group">
-                    <button class="primary-btn" id="generate-prompt">
-                        <i class="fas fa-magic"></i> Generate New Prompt
-                    </button>
-                    <button class="secondary-btn" id="save-prompt">
-                        <i class="fas fa-bookmark"></i> Save Prompt
-                    </button>
-                </div>
-                
-                <div class="writing-area">
-                    <label for="quick-notes">Quick Notes & Ideas:</label>
-                    <textarea id="quick-notes" placeholder="Jot down your initial thoughts, characters, or plot ideas here..."></textarea>
+                <div class="ai-help-container">
+                    <div class="ai-help-title">
+                        <i class="fas fa-robot"></i>
+                        <h3>Need Inspiration?</h3>
+                    </div>
+                    <p>If you're feeling stuck, our AI can help continue your story or provide writing suggestions.</p>
+                    <div class="prompt-actions">
+                        <button class="outline-btn" id="get-continuation">
+                            <i class="fas fa-lightbulb"></i> Get Story Continuation
+                        </button>
+                    </div>
                 </div>
             </div>
             
-            <div class="tab-content" id="write-tab">
+            <div class="tab-content" id="writer-tab">
+                <div class="prompt-container">
+                    <div class="prompt-title">
+                        <h2>Current Prompt</h2>
+                    </div>
+                    <div class="prompt-content" id="writing-prompt">
+                        No active prompt. Generate one first!
+                    </div>
+                </div>
+                
                 <div class="writing-area">
-                    <label for="story-text">Your Story:</label>
+                    <label for="story-text">Your Story</label>
                     <textarea id="story-text" placeholder="Start writing your story here..."></textarea>
+                    <div class="word-count">Word count: <span id="word-count">0</span></div>
                 </div>
                 
-                <div class="button-group">
-                    <button class="primary-btn" id="get-help">
-                        <i class="fas fa-robot"></i> Get AI Writing Help
-                    </button>
-                    <button class="tertiary-btn" id="clear-story">
-                        <i class="fas fa-broom"></i> Clear Story
-                    </button>
-                </div>
-                
-                <div class="ai-assistance">
-                    <div class="ai-title">AI Writing Assistance</div>
-                    <p>Stuck with your story? Click the button above to get AI-generated suggestions for continuing your narrative.</p>
+                <div class="ai-help-container">
+                    <div class="ai-help-title">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI Writing Assistant</h3>
+                    </div>
+                    <p>Stuck with your story? Get AI-generated continuations based on what you've written so far.</p>
+                    <div class="prompt-actions">
+                        <button class="primary-btn" id="get-help">
+                            <i class="fas fa-wand-magic-sparkles"></i> Get AI Help
+                        </button>
+                    </div>
                     
                     <div class="ai-suggestions" id="ai-suggestions">
                         <!-- AI suggestions will appear here -->
                     </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="saved-tab">
+                <h2 style="margin-bottom: 20px;">Your Saved Prompts</h2>
+                <div class="saved-prompts" id="saved-prompts-list">
+                    <p id="no-saved">You haven't saved any prompts yet.</p>
                 </div>
             </div>
             
@@ -78,17 +471,397 @@
             </div>
         </div>
         
-        <div class="inspiration-quote" id="inspiration-quote">
-            "The role of a writer is not to say what we all can say, but what we are unable to say." - Anaïs Nin
-        </div>
-
         <footer>
             <p>Creative Writing Prompt Generator &copy; 2025 | Powered by AI Inspiration</p>
         </footer>
-        
     </div>
-    
-    <script src="script.js"></script>
 
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const tabs = document.querySelectorAll('.tab');
+            const generatorTab = document.getElementById('generator-tab');
+            const writerTab = document.getElementById('writer-tab');
+            const savedTab = document.getElementById('saved-tab');
+            const categories = document.querySelectorAll('.category');
+            const currentPrompt = document.getElementById('current-prompt');
+            const writingPrompt = document.getElementById('writing-prompt');
+            const generatePromptBtn = document.getElementById('generate-prompt');
+            const usePromptBtn = document.getElementById('use-prompt');
+            const savePromptBtn = document.getElementById('save-prompt');
+            const getContinuationBtn = document.getElementById('get-continuation');
+            const storyText = document.getElementById('story-text');
+            const wordCount = document.getElementById('word-count');
+            const getHelpBtn = document.getElementById('get-help');
+            const aiSuggestions = document.getElementById('ai-suggestions');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const savedPromptsList = document.getElementById('saved-prompts-list');
+            const noSaved = document.getElementById('no-saved');
+            
+            // State
+            let currentPromptText = '';
+            let savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
+            let selectedCategory = 'all';
+            
+            // Initialize only if elements exist
+            if (storyText && wordCount) {
+                updateWordCount();
+            }
+            displaySavedPrompts();
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    if (tab.dataset.tab === 'generator') {
+                        generatorTab.classList.add('active');
+                        writerTab.classList.remove('active');
+                        savedTab.classList.remove('active');
+                    } else if (tab.dataset.tab === 'writer') {
+                        writerTab.classList.add('active');
+                        generatorTab.classList.remove('active');
+                        savedTab.classList.remove('active');
+                    } else {
+                        savedTab.classList.add('active');
+                        generatorTab.classList.remove('active');
+                        writerTab.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Category selection
+            categories.forEach(category => {
+                category.addEventListener('click', () => {
+                    categories.forEach(c => c.classList.remove('active'));
+                    category.classList.add('active');
+                    selectedCategory = category.dataset.category;
+                });
+            });
+            
+            // Generate new prompt
+            if (generatePromptBtn) {
+                generatePromptBtn.addEventListener('click', generatePrompt);
+            }
+            
+            // Use prompt for writing
+            if (usePromptBtn) {
+                usePromptBtn.addEventListener('click', () => {
+                    if (!currentPromptText) {
+                        showError('Please generate a prompt first.');
+                        return;
+                    }
+                    
+                    if (writingPrompt) {
+                        writingPrompt.textContent = currentPromptText;
+                    }
+                    
+                    // Switch to writer tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    const writerTabElement = document.querySelector('.tab[data-tab="writer"]');
+                    if (writerTabElement) writerTabElement.classList.add('active');
+                    if (generatorTab) generatorTab.classList.remove('active');
+                    if (writerTab) writerTab.classList.add('active');
+                    if (savedTab) savedTab.classList.remove('active');
+                });
+            }
+            
+            // Save prompt
+            if (savePromptBtn) {
+                savePromptBtn.addEventListener('click', () => {
+                    if (!currentPromptText) {
+                        showError('No prompt to save. Generate one first.');
+                        return;
+                    }
+                    
+                    // Check if already saved
+                    if (savedPrompts.some(prompt => prompt.text === currentPromptText)) {
+                        showError('This prompt is already saved.');
+                        return;
+                    }
+                    
+                    savedPrompts.push({
+                        text: currentPromptText,
+                        category: selectedCategory,
+                        date: new Date().toLocaleDateString()
+                    });
+                    
+                    localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+                    displaySavedPrompts();
+                    
+                    // Show confirmation
+                    alert('Prompt saved successfully!');
+                });
+            }
+            
+            // Get story continuation
+            if (getContinuationBtn) {
+                getContinuationBtn.addEventListener('click', () => {
+                    if (!currentPromptText) {
+                        showError('Please generate a prompt first.');
+                        return;
+                    }
+                    
+                    generateContinuation(currentPromptText);
+                });
+            }
+            
+            // Update word count
+            if (storyText) {
+                storyText.addEventListener('input', updateWordCount);
+            }
+            
+            // Get AI help for current story
+            if (getHelpBtn) {
+                getHelpBtn.addEventListener('click', () => {
+                    const storySoFar = storyText ? storyText.value.trim() : '';
+                    
+                    if (!storySoFar) {
+                        showError('Please write some of your story first.');
+                        return;
+                    }
+                    
+                    generateContinuation(storySoFar, true);
+                });
+            }
+            
+            // Generate a new prompt
+            function generatePrompt() {
+                showLoading();
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    hideLoading();
+                    
+                    const prompts = {
+                        all: [
+                            "Write a story about a character who discovers an object that allows them to see into parallel universes.",
+                            "Create a tale about a librarian who finds that the books in their library are rewriting reality.",
+                            "Imagine a world where emotions are visible as colored auras around people. What happens when someone is born without one?",
+                            "Write about a chef who can cook meals that evoke specific memories in those who eat them.",
+                            "Tell the story of a person who receives a letter from their future self warning them about a single choice they must make."
+                        ],
+                        fiction: [
+                            "Write about a family reunion where a long-buried secret is unexpectedly revealed.",
+                            "Create a story about an unlikely friendship that forms between two completely different people.",
+                            "Describe a character who must confront their greatest fear in an ordinary setting.",
+                            "Write about a person who finds a mysterious key that opens a door they've never noticed before."
+                        ],
+                        scifi: [
+                            "In a future where dreams can be recorded and watched, a person discovers someone else's dreams in their collection.",
+                            "Write about the first contact with an alien species that communicates entirely through music.",
+                            "Create a story set on a generation ship where the inhabitants have forgotten they're on a ship.",
+                            "Imagine a world where time travel exists but is strictly regulated. What happens when someone breaks the rules?"
+                        ],
+                        fantasy: [
+                            "Write about a modern-day person who discovers they're the heir to a magical kingdom they thought was fictional.",
+                            "Create a tale about a dragon who prefers baking to hoarding treasure.",
+                            "Imagine a world where everyone has a magical talent except for one person. How do they find their place?",
+                            "Write about a magical shop that appears only when someone truly needs it."
+                        ],
+                        mystery: [
+                            "A detective wakes up with amnesia and must solve a crime they might have committed.",
+                            "Write about a small town where everyone knows a secret, but no one will talk about it.",
+                            "Create a story about a series of thefts where nothing valuable is taken, only seemingly random objects.",
+                            "A person receives a photo in the mail of themselves doing something they have no memory of."
+                        ],
+                        romance: [
+                            "Write about two rival chefs who are forced to work together on a cooking competition.",
+                            "Create a story about pen pals who have been writing for years but have never met.",
+                            "Imagine a romance between a time traveler and someone from the present, with the complication that the time traveler's visits are unpredictable.",
+                            "Write about two people who keep accidentally swapping lives due to a magical mix-up."
+                        ]
+                    };
+                    
+                    let promptPool = prompts.all;
+                    
+                    if (selectedCategory !== 'all' && prompts[selectedCategory]) {
+                        promptPool = prompts[selectedCategory];
+                    }
+                    
+                    const randomIndex = Math.floor(Math.random() * promptPool.length);
+                    currentPromptText = promptPool[randomIndex];
+                    if (currentPrompt) {
+                        currentPrompt.textContent = currentPromptText;
+                    }
+                }, 1500);
+            }
+            
+            // Generate continuation for a story
+            function generateContinuation(text, forStory = false) {
+                showLoading();
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    hideLoading();
+                    
+                    const continuations = [
+                        "As they looked closer, they noticed something unusual that changed everything.",
+                        "Little did they know, this discovery would set them on a path they could never have imagined.",
+                        "Suddenly, a noise from the other room made them freeze in place.",
+                        "With a deep breath, they made a decision that would alter the course of their life forever.",
+                        "The memory came flooding back, vivid and unsettling, explaining everything and nothing at the same time.",
+                        "Just when they thought they had it all figured out, a new piece of information turned everything upside down.",
+                        "The world seemed to shift around them, reality bending in ways they couldn't comprehend.",
+                        "They realized they weren't alone; someone—or something—had been watching them the entire time."
+                    ];
+                    
+                    const randomIndex = Math.floor(Math.random() * continuations.length);
+                    const continuation = continuations[randomIndex];
+                    
+                    if (forStory) {
+                        // Add to AI suggestions
+                        const suggestionId = 'suggestion-' + Date.now();
+                        const suggestionHTML = `
+                            <div class="suggestion" id="${suggestionId}">
+                                <div class="suggestion-header">
+                                    <div class="suggestion-title">AI Suggestion</div>
+                                    <button class="use-suggestion" data-suggestion="${suggestionId}">Use This</button>
+                                </div>
+                                <div class="suggestion-content">${continuation}</div>
+                            </div>
+                        `;
+                        
+                        if (aiSuggestions) {
+                            aiSuggestions.innerHTML = suggestionHTML + aiSuggestions.innerHTML;
+                            
+                            // Add event listener to the new button
+                            const suggestionButton = document.querySelector(`[data-suggestion="${suggestionId}"]`);
+                            if (suggestionButton) {
+                                suggestionButton.addEventListener('click', function() {
+                                    const suggestionElement = document.getElementById(this.dataset.suggestion);
+                                    if (suggestionElement) {
+                                        const suggestionText = suggestionElement.querySelector('.suggestion-content').textContent;
+                                        
+                                        // Add the suggestion to the story
+                                        if (storyText) {
+                                            storyText.value += ' ' + suggestionText;
+                                            updateWordCount();
+                                        }
+                                        
+                                        // Remove the suggestion
+                                        suggestionElement.remove();
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        // Show continuation for the prompt
+                        if (currentPrompt) {
+                            currentPrompt.textContent = currentPromptText + ' ' + continuation;
+                            currentPromptText = currentPrompt.textContent;
+                        }
+                    }
+                }, 2000);
+            }
+            
+            // Update word count
+            function updateWordCount() {
+                if (!storyText || !wordCount) return;
+                
+                const text = storyText.value;
+                const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+                wordCount.textContent = words;
+            }
+            
+            // Display saved prompts
+            function displaySavedPrompts() {
+                if (!savedPromptsList || !noSaved) return;
+                
+                if (savedPrompts.length === 0) {
+                    noSaved.style.display = 'block';
+                    savedPromptsList.innerHTML = '';
+                    return;
+                }
+                
+                noSaved.style.display = 'none';
+                savedPromptsList.innerHTML = '';
+                
+                savedPrompts.forEach((prompt, index) => {
+                    const promptElement = document.createElement('div');
+                    promptElement.className = 'saved-prompt';
+                    promptElement.innerHTML = `
+                        <div class="saved-prompt-content">
+                            <strong>${prompt.text}</strong>
+                            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">
+                                Category: ${prompt.category} | Saved: ${prompt.date}
+                            </div>
+                        </div>
+                        <div class="saved-prompt-actions">
+                            <button class="outline-btn use-saved-prompt" data-index="${index}">
+                                <i class="fas fa-pen-fancy"></i> Use
+                            </button>
+                            <button class="outline-btn delete-saved-prompt" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    savedPromptsList.appendChild(promptElement);
+                });
+                
+                // Add event listeners to the new buttons
+                document.querySelectorAll('.use-saved-prompt').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        currentPromptText = savedPrompts[index].text;
+                        if (currentPrompt) {
+                            currentPrompt.textContent = currentPromptText;
+                        }
+                        
+                        // Switch to generator tab
+                        tabs.forEach(t => t.classList.remove('active'));
+                        const generatorTabElement = document.querySelector('.tab[data-tab="generator"]');
+                        if (generatorTabElement) generatorTabElement.classList.add('active');
+                        if (generatorTab) generatorTab.classList.add('active');
+                        if (writerTab) writerTab.classList.remove('active');
+                        if (savedTab) savedTab.classList.remove('active');
+                    });
+                });
+                
+                document.querySelectorAll('.delete-saved-prompt').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        savedPrompts.splice(index, 1);
+                        localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+                        displaySavedPrompts();
+                    });
+                });
+            }
+            
+            // Show loading state
+            function showLoading() {
+                if (loading) {
+                    loading.style.display = 'block';
+                }
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+            
+            // Hide loading state
+            function hideLoading() {
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+            }
+            
+            // Show error message
+            function showError(message) {
+                if (errorText && errorMessage) {
+                    errorText.textContent = message;
+                    errorMessage.style.display = 'block';
+                }
+                hideLoading();
+            }
+            
+            // Generate initial prompt on load
+            generatePrompt();
+        });
+    </script>
 </body>
 </html>
