@@ -9,4 +9,3 @@ A web application that generates creative writing prompts and provides AI-powere
 - **Writing Workspace** : Dedicated area for writing with real-time word count tracking
 - **AI Assistance** : Get story continuations and writing suggestions when stuck
 - **Prompt Management** : Save favorite prompts for later use
-- **Responsive Design** : Works seamlessly on desktop and mobile devices
